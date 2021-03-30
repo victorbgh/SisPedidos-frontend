@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, MenuController, NavController } from 'ionic-angular';
-import { AuthService } from '../../app/services/aut.service';
+import { AuthService } from '../../app/services/auth.service';
 import { CredenciaisDTO } from '../../models/credenciais.dto';
 
 @IonicPage()
@@ -30,6 +30,15 @@ export class HomePage {
     this.menu.swipeEnable(true);
   }
 
+  ionViewDidEnter(){
+    this.authService.refreshToken()
+      .subscribe(response => {
+        this.authService.successfulLogin(response.headers.get('Authorization'));
+        this.navCtrl.setRoot('CategoriasPage');
+    },
+      error => {});
+  }
+
   login() {
     this.authService.authenticate(this.creds)
       .subscribe(response => {
@@ -37,6 +46,10 @@ export class HomePage {
         this.navCtrl.setRoot('CategoriasPage');
     },
       error => {});
+  }
+
+  signup(){
+    this.navCtrl.push('SignupPage');
   }
 
 }
