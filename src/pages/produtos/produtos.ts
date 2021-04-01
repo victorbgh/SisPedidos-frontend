@@ -33,25 +33,23 @@ export class ProdutosPage {
         this.items = this.items.concat(response['content']);
         let end = this.items.length - 1;
         loader.dismiss();
-        console.log(this.page);
-        console.log(this.items);
-        // this.loadImageUrls(start, end);
+        this.loadImageUrls(start, end);
       },
       error => {
         loader.dismiss();
       });
   }
 
-  // loadImageUrls(start: number, end: number) {
-  //   for (var i=start; i<=end; i++) {
-  //     let item = this.items[i];
-  //     this.produtoService.getSmallImageFromBucket(item.id)
-  //       .subscribe(response => {
-  //         item.imageUrl = `${API_CONFIG.bucketBaseUrl}/prod${item.id}-small.jpg`;
-  //       },
-  //       error => {});
-  //   }
-  // }
+  loadImageUrls(start: number, end: number) {
+    for (var i=start; i<=end; i++) {
+      let item = this.items[i];
+      this.produtoService.getSmallImageFromBucket(item.id)
+        .subscribe(response => {
+          item.imageUrl = `${API_CONFIG.bucketBaseUrl}/prod${item.id}-small.jpg`;
+        },
+        error => {});
+    }
+  }
 
   showDetail(produto_id : string) {
     this.navCtrl.push('ProdutoDetailPage', {produto_id: produto_id});
